@@ -59,6 +59,16 @@
                     <li><a href="{{ route('Items.create') }}">New Item</a></li>
                 </ul>
             </li>
+
+            <li>
+                      <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">purchase</span>
+                          <span class="fa arrow"></span></a>
+                      <ul class="nav nav-second-level collapse">
+                          <li><a href="{{ route('Invoices.index') }}">All purchases</a></li>
+                          <li><a href="{{ route('Invoices.create') }}">New purchase</a></li>
+                      </ul>
+                  </li>
+            
             <!--         <li>
                 <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Projects</span>
                     <span class="fa arrow"></span></a>

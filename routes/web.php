@@ -15,8 +15,12 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::resource('customers', 'CustomerController');
     Route::resource('Suppliers', 'SupplierController');
     Route::resource('Items', 'ItemController');
+    Route::resource('Invoices', 'InvoiceController');
+    Route::post('updateinvoice', 'InvoiceController@update');
 
     Route::resource('Suppliers.create', 'SupplierController@create');
+    Route::post('updatesupplier', 'SupplierController@update');
+    Route::post('updateitem', 'ItemController@update');
 
     Route::resource('productlines', 'ProductlineController');
     Route::resource('projects', 'ProjectController');

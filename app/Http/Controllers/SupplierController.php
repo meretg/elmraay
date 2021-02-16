@@ -18,8 +18,10 @@ class SupplierController extends Controller
     public function index()
     {
         //
-        $suppliers = Supplier::all();
-
+        //$suppliers = Supplier::all();
+        $suppliers = Supplier::where('state', 1)
+                       ->orderBy('id')
+                       ->get();
         return view('Suppliers.index', compact('suppliers'));
     }
 
@@ -73,7 +75,7 @@ class SupplierController extends Controller
             /*            'pricebook_id' => 'max:255',*/
         ]);
         $input = $request->only('name',
-            'address1', 'phone', 'code'
+            'address1', 'phone', 'code','state'
             );
         $result = Supplier::create($input);
         return redirect()->route('Suppliers.index')
@@ -112,25 +114,33 @@ class SupplierController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
-        $supplier = Supplier::findOrFail($id);
+        $supplier = Supplier::findOrFail($request->id);
 
         $this->validate($request, [
-            'phone' => 'required|digits_between:9,11|unique:suppliers,phone,'.$supplier->id,
+            'phone' => 'required',
         ]);
 
         $supplier->name = $request->name;
         $supplier->address1 = $request->address1;
         $supplier->phone = $request->phone;
         $supplier->code= $request->code;
+        $supplier->state= 1;
 
         $supplier->save();
 
-        Session::flash('update_message', 'The new supplier has been updated');
+        Session::flash('success', 'The new supplier has been updated');
 
-        return redirect('Suppliers.index');
+      //  return redirect('Suppliers.index');
+      $response = array(
+        'status' => 'success',
+        'msg' => 'The new supplier has been updated',
+    );
+   return response()->json($response);
+    //return redirect()->action('SupplierController@index');
+
     }
 
     /**
@@ -149,7 +159,12 @@ class SupplierController extends Controller
         Session::flash('deleted_message', 'The supplier has been deleted');
 
         return redirect('/bowner/supplier');*/
-        Supplier::find($id)->delete();
+        //Supplier::find($id)->delete();
+        $supplier = Supplier::findOrFail($id);
+
+        $supplier->state= 2;
+        $supplier->save();
+
         return redirect()->route('Suppliers.index')
             ->with('success', 'supplier deleted successfully');
     }

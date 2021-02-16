@@ -18,9 +18,11 @@ class ItemController extends Controller
     public function index()
     {
         //
-        $items = Item::all();
-
-        return view('items.index', compact('items'));
+      //  $items = Item::all();
+        $items = Item::where('state', 1)
+                       ->orderBy('id')
+                       ->get();
+        return view('Items.index', compact('items'));
     }
 
     /**
@@ -33,7 +35,7 @@ class ItemController extends Controller
         //
         //return view('bowner.Item.create');
         $items = Item::all();
-        return view('items.create', compact('items'));
+        return view('Items.create', compact('items'));
 
     }
 
@@ -49,7 +51,7 @@ class ItemController extends Controller
         /*$Item = new Item();
 
         $this->validate($request, [
-            'phone' => 'required|digits_between:9,11|unique:items',
+            'phone' => 'required|digits_between:9,11|unique:Items',
         ]);
 
         $Item->name = $request->name;
@@ -71,11 +73,16 @@ class ItemController extends Controller
             /*            'pricebook_id' => 'max:255',*/
         ]);
         $input = $request->only('name',
-            'quantity'
+            'quantity','state'
             );
+            $items = Item::where('state', 1)
+                           ->orderBy('id')
+                           ->get();
         $result = Item::create($input);
-        return redirect()->route('items.index')
-            ->with('success', 'item created successfully');
+        return redirect()->route('Items.index')
+
+
+            ->with(array('success'=>'item created successfully','items'=>$items));
     }
 
     /**
@@ -98,9 +105,9 @@ class ItemController extends Controller
     public function edit($id)
     {
         //
-        $Item = Item::findOrFail($id);
+        $item = Item::findOrFail($id);
+        return view('Items.edit', compact('item'));
 
-        return view('bowner.Item.edit', compact('Item'));
     }
 
     /**
@@ -110,7 +117,7 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+  /*  public function update(Request $request, $id)
     {
         //
         $Item = Item::findOrFail($id);
@@ -126,8 +133,33 @@ class ItemController extends Controller
         Session::flash('update_message', 'The new Item has been updated');
 
         return redirect('/bowner/Item');
-    }
+    }*/
+    public function update(Request $request)
+    {
+        //
+        $item = Item::findOrFail($request->id);
 
+
+
+
+                $item->name = $request->name;
+                $item->quantity = $request->quantity;
+                $item->state =1;
+
+
+                $item->save();
+
+        Session::flash('update_message', 'The new item has been updated');
+
+      //  return redirect('Suppliers.index');
+      $response = array(
+        'status' => 'success',
+        'msg' => 'The new item has been updated',
+    );
+   return response()->json($response);
+    //return redirect()->action('SupplierController@index');
+
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -144,8 +176,12 @@ class ItemController extends Controller
         Session::flash('deleted_message', 'The Item has been deleted');
 
         return redirect('/bowner/Item');*/
-        Item::find($id)->delete();
-        return redirect()->route('items.index')
+    //    Item::find($id)->delete();
+        $item = Item::findOrFail($id);
+
+        $item->state= 2;
+        $item->save();
+        return redirect()->route('Items.index')
             ->with('success', 'Item deleted successfully');
     }
 }

@@ -11,15 +11,7 @@ class Invoice extends Model
      *
      * @var array
      */
-    protected $fillable = [
-    ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-    ];
-
+         protected $guarded = [];
+     
 }

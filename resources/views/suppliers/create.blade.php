@@ -63,6 +63,8 @@
                                 <div class="col-md-6">
                                     <input id="phone" name="phone" type="text" class="form-control"
                                            value="{{ old('phone') }}">
+                                           <input id="state" name="state" type="hidden" class="form-control"
+                                                  value=1>
                                     @if ($errors->has('phone'))
                                         <span class="help-block"><strong>{{ $errors->first('phone') }}</strong></span>
                                     @endif
@@ -76,43 +78,13 @@
 
 
 
-
-                            {{--
-                                                    <legend class="section">Assign Pricebook to this Customer</legend>
-                                                        <div class="form-group{{ $errors->has('currency_id') ? ' has-error' : '' }}">
-                                                            <label for="currency_id" class="col-md-4 control-label">Currency</label>
-                                                            <div class="col-md-6">
-                                                                <select class="form-control m-b" id="currency_id" name="currency_id"
-                                                                        onchange="getPricebooks(this.value);">
-                                                                    @foreach ($currencies as $key => $currency_id)
-                                                                        <option value="{{$key}}">{{$currency_id}}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                                @if ($errors->has('currency_id'))
-                                                                    <span class="help-block"><strong>{{ $errors->first('currency_id') }}</strong></span>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group{{ $errors->has('pricebook_id') ? ' has-error' : '' }}">
-                                                            <label for="pricebook_id" class="col-md-4 control-label">Pricebook</label>
-                                                            <div class="col-md-6">
-                                                                <select class="form-control m-b" id="pricebook_id" name="pricebook_id">
-                                                                    <option></option>
-                                                                </select>
-                                                                @if ($errors->has('pricebook_id'))
-                                                                    <span class="help-block"><strong>{{ $errors->first('pricebook_id') }}</strong></span>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                            --}}
                         </div>
 
 
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary"> Save</button>
-                                <a class="btn btn-link" href="{{ url('customers') }}"> Cancel</a>
+                                <a class="btn btn-link" href="{{ url('Suppliers') }}"> Cancel</a>
                             </div>
                         </div>
                     </form>

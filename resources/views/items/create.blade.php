@@ -20,7 +20,7 @@
                         </div>
                     @endif
 
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('items') }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ url('Items') }}">
                         {{ csrf_field() }}
 
                         <div class="col-md-6">
@@ -41,6 +41,8 @@
                                 <div class="col-md-6">
                                     <input id="quantity" name="quantity" type="text" class="form-control"
                                            value="{{ old('quantity') }}" required>
+                                           <input id="state" name="state" type="hidden" class="form-control"
+                                                  value=1>
                                     @if ($errors->has('quantity'))
                                         <span class="help-block"><strong>{{ $errors->first('quantity') }}</strong></span>
                                     @endif
@@ -62,7 +64,7 @@
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary"> Save</button>
-                                <a class="btn btn-link" href="{{ url('customers') }}"> Cancel</a>
+                                <a class="btn btn-link" href="{{ url('Items') }}"> Cancel</a>
                             </div>
                         </div>
                     </form>

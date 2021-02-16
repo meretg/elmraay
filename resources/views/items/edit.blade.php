@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Edit User')
+@section('title', 'Edit item')
 
 @section('content')
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Edit User</div>
+                    <div class="panel-heading">Edit item</div>
 
                     <div class="panel-body">
                         <!-- Display Validation Errors -->
@@ -23,17 +23,19 @@
                         @endif
 
 
-                        <form class="form-horizontal" role="form" method="POST"
-                              action="{{ url('admin/users/'.$user->id) }}">
+                        <form class="form-horizontal" enctype="multipart/form-data" action = "updateitem" method = "post">
+
                             {{ csrf_field() }}
                             {{ method_field('PATCH') }}
 
                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                <label for="name" class="col-md-4 control-label">Name</label>
+                                <label for="name" class="col-md-4 control-label">الاسم</label>
+                                <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+                                <input type="hidden"  id="item_id" value="{{$item->id }}">
 
                                 <div class="col-md-6">
-                                    <input id="display_name" type="text" class="form-control" name="name"
-                                           value="{{$user->name}}"
+                                    <input id="name" type="text" class="form-control" name="name"
+                                           value="{{$item->name}}"
                                            required autofocus>
 
                                     @if ($errors->has('name'))
@@ -43,80 +45,36 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <label for="email" class="col-md-4 control-label">E-Mail</label>
+                            <div class="form-group{{ $errors->has('quantity') ? ' has-error' : '' }}">
+                                <label for="quantity" class="col-md-4 control-label">كميه</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="text" class="form-control" name="email"
-                                           value="{{$user->email}}"
+                                    <input id="quantity" type="text" class="form-control" name="quantity"
+                                           value="{{$item->quantity}}"
                                            required autofocus>
 
-                                    @if ($errors->has('email'))
+                                    @if ($errors->has('quantity'))
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label for="password" class="col-md-4 control-label">Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" autofocus>
-                                    @if ($errors->has('password'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                                <label for="password_confirmation" class="col-md-4 control-label">Confirm
-                                    Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password_confirmation" type="password" class="form-control"
-                                           name="password_confirmation" autofocus>
-                                    @if ($errors->has('password_confirmation'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
+                                        <strong>{{ $errors->first('quantity') }}</strong>
                                     </span>
                                     @endif
                                 </div>
                             </div>
 
 
-                            <div class="form-group{{ $errors->has('roles') ? ' has-error' : '' }}">
-                                <label for="roles" class="col-md-4 control-label">Role</label>
 
-                                <div class="col-md-6">
 
-                                    <select class="form-control m-b" id="role" name="roles[]">
-                                        @foreach ($roles as $role)
-                                            <option value="{{$role->id}}" {{in_array($role->id, $userRoles) ? "selected" : null}}>
-                                                {{$role->display_name}}
-                                            </option>
-                                        @endforeach
-                                    </select>
 
-                                    @if ($errors->has('roles'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('roles') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
+
 
 
                             <div class="form-group">
                                 <div class="col-md-8 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="button" onclick="update()"  class="btn btn-primary">
                                         Update
                                     </button>
 
-                                    <a class="btn btn-link" href="{{ url('admin/users') }}">
+                                    <a class="btn btn-link" href="{{ url('Items') }}">
                                         Cancel
                                     </a>
                                 </div>
@@ -129,3 +87,61 @@
         </div>
     </div>
 @endsection
+
+
+<script>
+
+function update()
+{
+
+
+  $.ajax({
+    url: "{{ URL::to('updateitem') }}",
+    type: "post",
+    dataType: 'json',
+    data: {"_token":$('#_token').val(),
+    "name":$('#name').val(),
+    "quantity":$('#quantity').val(),
+"id":$('#item_id').val()},
+    success: function(response)
+    {
+      //if(response['errors'])
+    //  {
+
+
+    /*  if(response['errors'].phone)
+      {var html="";
+        for(var i=0;i<response['errors'].phone.length;i++){
+        html+=''+response["errors"].phone[i]+'<br>'
+      }
+        $("#olddoctor_phoneinvalid").html(html);
+      }
+      if(response['errors'].type)
+      {
+        $("#olddoctor_typeinvalid").html(response['errors'].type);
+      }
+      if(response['errors'].docName)
+      {
+        $("#olddoctor_nameinvalid").html(response['errors'].docName);
+      }
+
+    }
+      else if(response.success)
+      {*/
+      //  location.reload();
+    //  }
+    //  location.reload();
+    window.location.href = "/Items";
+    //window.location.replace("suppliers");
+
+
+
+
+   }
+
+
+
+    });
+
+}
+</script>

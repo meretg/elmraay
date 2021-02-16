@@ -6,6 +6,7 @@
     <div class="row" style="dir:rtl">
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
+              {{session()->get('name') }}
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success">
                         <p>{{ $message }}</p>
@@ -21,32 +22,27 @@
                             <tr>
                                 <th class="text-center">Code</th>
                                 <th class="text-center">Name</th>
-                                <th class="text-center">Email</th>
-                                <th class="text-center">Status</th>
+                                <th class="text-center">Phone</th>
+                                <th class="text-center">address</th>
 
-                                <th class="text-center"></th>
+                                <th class="text-center">actions</th>
                             </tr>
                             </thead>
-                            <a href="{{ route('Suppliers.create')}}" class="btn btn-success">New Customer</a>
+                            <a href="{{ route('Suppliers.create')}}" class="btn btn-success">New Supplier</a>
                             <tbody>
                             @foreach ($suppliers as $key => $supplier)
                                 <tr class="gradeX">
                                     <td class="text-center">
-                                        <a class="btn btn-xs btn-info"
-                                           href="{{ route('Suppliers.show',$supplier->id) }}">
-                                            <i class="fa fa-external-link"></i> {{ "cus_".$supplier->id }}</a>
+                                      {{ $supplier->code }}
                                     </td>
                                     <td class="text-center">{{ $supplier->name }}</td>
                                     <td class="text-center">{{ $supplier->phone }}</td>
-                                    <td class="text-center">{{ $supplier->address }}</td>
+                                    <td class="text-center">{{ $supplier->address1 }}</td>
 
 
-                                    <td class="text-center">{{ "created" }}</td>
-                                    <td class="text-center">{{ "updated" }}</td>
+
                                     <td class="text-center">
-                                        <a class="btn btn-xs btn-info"
-                                           href="{{ route('Suppliers.show',$supplier->id) }}"><i
-                                                    class="fa fa-external-link"></i> </a>
+
                                         <a class="btn btn-xs btn-primary"
                                            href="{{ route('Suppliers.edit',$supplier->id) }}"><i class="fa fa-edit"></i>
                                         </a>

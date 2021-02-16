@@ -19,32 +19,31 @@
                         <table class="table table-striped table-bordered table-hover dataTables-example nowrap">
                             <thead>
                             <tr>
+                              <th class="text-center">#</th>
+
                                 <th class="text-center">Name</th>
                                 <th class="text-center">quantity</th>
 
-                                <th class="text-center"></th>
+                                <th class="text-center">actions</th>
                             </tr>
                             </thead>
                             <a href="{{ route('Items.create')}}" class="btn btn-success">New Item</a>
                             <tbody>
                             @foreach ($items as $key => $item)
+
                                 <tr class="gradeX">
                                     <td class="text-center">
-                                        <a class="btn btn-xs btn-info"
-                                           href="{{ route('Items.show',$item->id) }}">
-                                            <i class="fa fa-external-link"></i> {{ "cus_".$item->id }}</a>
+                                      {{$key+1}}
                                     </td>
                                     <td class="text-center">{{ $item->name }}</td>
                                     <td class="text-center">{{ $item->quantity }}</td>
 
                                     <td class="text-center">
-                                        <a class="btn btn-xs btn-info"
-                                           href="{{ route('Items.show',$item->id) }}"><i
-                                                    class="fa fa-external-link"></i> </a>
+
                                         <a class="btn btn-xs btn-primary"
                                            href="{{ route('Items.edit',$item->id) }}"><i class="fa fa-edit"></i>
                                         </a>
-                                        <form action="{{ url('items/'.$item->id) }}" method="POST"
+                                        <form action="{{ url('Items/'.$item->id) }}" method="POST"
                                               style="display: inline-block">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}
